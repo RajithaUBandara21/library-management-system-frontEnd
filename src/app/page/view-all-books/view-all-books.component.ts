@@ -1,10 +1,14 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Component, OnInit } from '@angular/core';
+import { BookResponse } from '../../model/getAllbookResponce';
+import { Book } from '../../model/book.model';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-view-all-books',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './view-all-books.component.html',
   styleUrl: './view-all-books.component.css'
 })
@@ -15,7 +19,7 @@ export class ViewAllBooksComponent implements OnInit {
 
 
   private http ;
-  public bookList: any = {};
+  public bookList: Book [] = [];
   // Constructor to inject the HttpClient service
   // This service is used to make HTTP requests to the backend API
   constructor(private httpClient : HttpClient) {
@@ -29,8 +33,13 @@ this.loadBooks();
 
   loadBooks() {
     const params = { page: '0', size: '10' };
-    this.httpClient.get('http://localhost:8090/api/v1/book/get-all-book', { params }).subscribe((data) => {
-      console.log(data);
+    this.httpClient.get<BookResponse>('http://localhost:8090/api/v1/book/get-all-book', { params }).subscribe(( bookResponce : BookResponse) => {
+   
+      this.bookList = bookResponce.data.books;
+      console.log(this.bookList);
+      console.log(bookResponce.data.itemCount);
+      console.log(bookResponce.code);
+      console.log(bookResponce.messaage);
     });
       // Handle the response data here
     }
