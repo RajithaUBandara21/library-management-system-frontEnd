@@ -1,22 +1,67 @@
+<table class="table table-striped container">
+  <thead>
+    <tr>
+      <th scope="col">isbn</th>
+      <th scope="col">title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Category</th>
+      <th scope="col">Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of bookList">
+      <th scope="row">{{book.isbn}}</th>
+      <td>{{book.title}}</td>
+      <td>{{book.author}}</td>
+      <td>{{book.category}}</td>
+      <td>{{book.qty}}</td>
+      <td><button class="btn btn-primary" (click)="setSelectedBook(book) " data-bs-toggle="modal"
+          data-bs-target="#editModalCenter"><i class="bi bi-pencil-square"></i></button></td>
+      <td><button class="btn btn-danger " data-bs-toggle="modal" (click)="setSelectedBook(book)"
+          data-bs-target="#deleteModalCenter"><i class="bi bi-trash"></i></button></td>
+    </tr>
 
-<table class="table table-striped container ">
-    <thead>
-      <tr>
-        <th scope="col">isbn</th>
-        <th scope="col">title</th>
-        <th scope="col">Author</th>
-        <th scope="col">Category</th>
-        <th scope="col">Quantity</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor ="let book of bookList">
-        <th scope="row">{{book.isbn}}</th>
-        <td>{{book.title}}</td>
-        <td>{{book.author}}</td>
-        <td>{{book.category}}</td>
-        <td>{{book.qty}}</td>
-      </tr>
-      
-    </tbody>
-  </table>
+  </tbody>
+</table>
+
+<!--Delete Modal -->
+<div class="modal fade" id="deleteModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are You Sure ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger " (click)="deleteBook() " data-bs-dismiss="modal">Delete
+          Book</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Edit Modal -->
+<div class="modal fade" id="editModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+    <input  [(ngModel)] = "isbn" value="isbn"/>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger " (click)="deleteBook() " data-bs-dismiss="modal">Delete
+          Book</button>
+      </div>
+    </div>
+  </div>
+</div>
