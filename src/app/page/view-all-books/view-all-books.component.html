@@ -15,8 +15,10 @@
       <td>{{book.author}}</td>
       <td>{{book.category}}</td>
       <td>{{book.qty}}</td>
+      <!-- Edit -->
       <td><button class="btn btn-primary" (click)="setSelectedBook(book) " data-bs-toggle="modal"
-          data-bs-target="#editModalCenter"><i class="bi bi-pencil-square"></i></button></td>
+          data-bs-target="#editModal"><i class="bi bi-pencil-square"></i></button></td>
+      <!-- Delete -->
       <td><button class="btn btn-danger " data-bs-toggle="modal" (click)="setSelectedBook(book)"
           data-bs-target="#deleteModalCenter"><i class="bi bi-trash"></i></button></td>
     </tr>
@@ -46,21 +48,47 @@
 </div>
 
 <!--Edit Modal -->
-<div class="modal fade" id="editModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Edit Item</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="exampleModalLabel">Update {{selectedBook?.title}} Book</h5>
+       
       </div>
       <div class="modal-body">
-    <input  [(ngModel)] = "isbn" value="isbn"/>
-
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">ID</label>
+            <input type="text" class="form-control" id="book-isbn" disabled placeholder={{selectedBook?.isbn}}>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">ISBN</label>
+            <input type="text" class="form-control" id="book-isbn" disabled placeholder={{selectedBook?.isbn}}>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Book Title</label>
+            <input type="text" class="form-control" id="book-title" [(ngModel)]= "selectedBook.title" [ngModelOptions]="{standalone: true} "value="{{selectedBook?.title}}">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Author</label>
+            <input type="text" class="form-control" id="book-author" [(ngModel)]= "selectedBook.author" [ngModelOptions]="{standalone: true} " value="{{selectedBook?.author}}">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">category</label>
+            <input type="text" class="form-control" id="book-category"  [(ngModel)]= "selectedBook.category" [ngModelOptions]="{standalone: true} " value="{{selectedBook?.category}}">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Number Of books</label>
+            <input type="text" class="form-control" id="book-qty"   [(ngModel)]= "selectedBook.qty" [ngModelOptions]="{standalone: true} " value="{{selectedBook?.qty}}">
+          </div>
+         
+         
+        </form>
       </div>
       <div class="modal-footer">
+        
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger " (click)="deleteBook() " data-bs-dismiss="modal">Delete
-          Book</button>
+        <button type="button" class="btn btn-primary" (click)="editBook()"  data-bs-dismiss="modal">Update Book</button>
       </div>
     </div>
   </div>

@@ -1,23 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { BookResponse } from '../../model/getAllbookResponce';
 import { Book } from '../../model/book.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, withFetch } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { subscribe } from 'diagnostics_channel';
 import { StrandedResponse } from '../../model/starndedResponce';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
+const Base_URL = 'http://localhost:8090/api/v1/book/';
 @Component({
   selector: 'app-view-all-books',
   standalone: true,
-  imports: [CommonModule,FormsModule,],
+  imports: [CommonModule, FormsModule],
   templateUrl: './view-all-books.component.html',
   styleUrl: './view-all-books.component.css',
 })
 export class ViewAllBooksComponent implements OnInit {
   private http;
   public bookList: Book[] = [];
-  public selectedBook: any;
+  public selectedBook: any = {};
   isbn: any;
   constructor(private httpClient: HttpClient) {
     this.http = httpClient;
@@ -33,7 +35,7 @@ export class ViewAllBooksComponent implements OnInit {
   loadBooks() {
     const params = { page: '0', size: '10' };
     this.httpClient
-      .get<BookResponse>('http://localhost:8090/api/v1/book/get-all-book', {
+      .get<BookResponse>(Base_URL + 'get-all-book', {
         params,
       })
       .subscribe((bookResponce: BookResponse) => {
@@ -42,17 +44,32 @@ export class ViewAllBooksComponent implements OnInit {
     // Handle the response data here
   }
 
-  editBook() {
-    alert('edit book');
+  deleteBook() {
+    const params = { isbn: this.selectedBook.isbn };
+    this.http
+      .delete(Base_URL + 'delete-book', { params })
+      .subscribe((response) => {
+        this.loadBooks();
+        Swal.fire({
+          title: 'Dleted',
+          text: '',
+          icon: 'success',
+        });
+      });
   }
 
-  deleteBook() {
-    const params = {isbn: this.selectedBook.isbn}
+  editBook() {
     this.http
-      .delete('http://localhost:8090/api/v1/book/delete-book', { params })
+      .put(Base_URL + 'book-update', this.selectedBook)
       .subscribe((response) => {
-        console.log("hisadsadadasdadasdsad" + response);
+        const res = response as StrandedResponse;
+        console.log('message' + res.message);
         this.loadBooks();
+        Swal.fire({
+          title: 'Updated',
+          text: '',
+          icon: 'success',
+        });
       });
   }
 }
